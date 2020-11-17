@@ -13,6 +13,7 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import TablePagination from '@material-ui/core/TablePagination';
 import Button from '@material-ui/core/Button';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
@@ -227,13 +228,17 @@ export default function TableFromScratch() {
         <CardHeader>
           <Grid container spacing={3}>
             <Grid item>
-              <Typography variant="h4">Product Master List</Typography>
+              <Typography variant="h4" style={{ color: "#5c4950" }}>Product Master List</Typography>
             </Grid>
             <Grid item>
-              <button onClick={() => exportToExcel()} className={classes.buttonGroup} style={{ backgroundColor: "#ea4845", borderRadius: "5px 0px 0px 5px" }}>
+              {/* <button onClick={() => exportToExcel()} className={classes.buttonGroup} style={{ backgroundColor: "#ea4845", borderRadius: "5px 0px 0px 5px" }}>
                 <Typography>Export to Excel</Typography></button>
               <button className={classes.buttonGroup} style={{ backgroundColor: "#ec5e5b", borderRadius: "0px 5px 5px 0px" }}>
-                <Typography>Add to Repricing</Typography></button>
+                <Typography>Add to Repricing</Typography></button> */}
+              <ButtonGroup color="secondary" variant="outlined" size="large">
+                <Button>Export to Excel</Button>
+                <Button>Add to Repricing</Button>
+              </ButtonGroup>
             </Grid>
           </Grid>
         </CardHeader>
