@@ -23,6 +23,8 @@ import CardHeader from "components/Card/CardHeader.js";
 
 import TextField from '@material-ui/core/TextField';
 
+import jsonData from 'jsonData';
+
 const StyledTableCell = withStyles(() => ({
   head: {
     backgroundColor: '#3f51b5',
@@ -84,13 +86,24 @@ export default function TableFromScratch() {
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const fetchInventory = () => {
-    axios.get('http://localhost:5000/test/')
-      .then(res => updateData({
-        originalData: res.data[0],
-        currentData: res.data[0],
-        keys: res.data[1]
-      }))
-      .catch(err => console.log(err));
+
+    // ---------- Populated with JSON formatted Data from src/jsonData.js
+
+    updateData({
+      originalData: jsonData.PML,
+      currentData: jsonData.PML,
+      keys: Object.keys(jsonData.PML[0])
+    })
+
+    // ---------- REAL AXIOS CALLS
+
+    // axios.get('http://localhost:5000/test/')
+    //   .then(res => updateData({
+    //     originalData: res.data[0],
+    //     currentData: res.data[0],
+    //     keys: res.data[1]
+    //   }))
+    //   .catch(err => console.log(err));
 
   }
 

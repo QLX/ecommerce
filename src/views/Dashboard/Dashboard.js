@@ -50,6 +50,8 @@ import { bugs, website, server } from "variables/general.js";
 import styles from "assets/jss/material-dashboard-react/views/dashboardStyle.js";
 import { Typography } from "@material-ui/core";
 
+import data from 'jsonData';
+
 const useStyles = makeStyles(styles);
 
 
@@ -74,82 +76,117 @@ export default function Dashboard() {
       products: [],
       totalSales: []
     }
-    // products: [],
-    // totalSales: []
   });
 
-  const [testKpi, updateTestKpi] = useState([]);
-
   useEffect(() => {
 
-    axios.get('http://gurupia.qlx.com/admin/GET_KPI1_Data.php?id=1', {
-      headers: {
-        'Access-Control-Allow-Origin': "*"
+    // ---------- Populated with JSON formatted Data from src/jsonData.js
+
+    updateKpi1(data.kpi1);
+    updateKpi2({
+      labels: data.kpi2.labels,
+      series: data.kpi2.series,
+      currentData: {
+        labels: data.kpi2.labels.week,
+        series: data.kpi2.series.map(item => {
+          return {
+            name: item.name,
+            count: item.count.week,
+            isActive: item.isActive,
+            Background_Color: item.Background_Color
+          }
+        })
       }
-    })
-      .then(res => updateTestKpi(res.data))
-      .catch(err => console.log(err))
+    });
+    updateKpi3(data.kpi3);
+    updateKpi6(() => {
+      const products = data.kpi6[0];
+      const totalSales = data.kpi6[1];
+      const productsData = products.map(datum => {
+        return {
+          "id": datum.id,
+          "label": datum.label,
+          "value": datum.value.today,
+          "color": datum.color
+        }
+      });
+      const totalSalesData = totalSales.map(datum => {
+        return {
+          "id": datum.id,
+          "label": datum.label,
+          "value": datum.value.today,
+          "color": datum.color
+        }
+      });
+      return {
+        products: data.kpi6[0],
+        totalSales: data.kpi6[1],
+        currentData: {
+          products: productsData,
+          totalSales: totalSalesData
+        }
+      }
+    });
 
-  }, [])
-
-  useEffect(() => {
+    // -------------------- REAL AXIOS CALL SETUP
     // KPI1 Real Route
     // http://gurupia.qlx.com/admin/GET_KPI1_Data.php?id=1
-    const requestOne = axios.get('http://localhost:5000/kpi1/');
-    const requestTwo = axios.get('http://localhost:5000/kpi2/');
-    const requestThree = axios.get('http://localhost:5000/kpi3');
-    const requestFour = axios.get('http://localhost:5000/kpi6');
 
-    axios.all([requestOne, requestTwo, requestThree, requestFour])
-      .then(axios.spread((...responses) => {
-        updateKpi1(responses[0].data);
-        updateKpi2({
-          labels: responses[1].data.labels,
-          series: responses[1].data.series,
-          currentData: {
-            labels: responses[1].data.labels.week,
-            series: responses[1].data.series.map(item => {
-              return {
-                name: item.name,
-                count: item.count.week,
-                isActive: item.isActive,
-                Background_Color: item.Background_Color
-              }
-            })
-          }
-        });
-        updateKpi3(responses[2].data);
-        updateKpi6(() => {
-          const products = responses[3].data[0];
-          const totalSales = responses[3].data[1];
-          const productsData = products.map(datum => {
-            return {
-              "id": datum.id,
-              "label": datum.label,
-              "value": datum.value.today,
-              "color": datum.color
-            }
-          });
-          const totalSalesData = totalSales.map(datum => {
-            return {
-              "id": datum.id,
-              "label": datum.label,
-              "value": datum.value.today,
-              "color": datum.color
-            }
-          });
-          return {
-            products: responses[3].data[0],
-            totalSales: responses[3].data[1],
-            currentData: {
-              products: productsData,
-              totalSales: totalSalesData
-            }
-          }
+    // const requestOne = axios.get('http://localhost:5000/kpi1/');
+    // const requestTwo = axios.get('http://localhost:5000/kpi2/');
+    // const requestThree = axios.get('http://localhost:5000/kpi3');
+    // const requestFour = axios.get('http://localhost:5000/kpi6');
 
-        });
-      }))
-      .catch(errors => console.log(errors));
+    // axios.all([requestOne, requestTwo, requestThree, requestFour])
+    //   .then(axios.spread((...responses) => {
+    //     updateKpi1(responses[0].data);
+    //     updateKpi2({
+    //       labels: responses[1].data.labels,
+    //       series: responses[1].data.series,
+    //       currentData: {
+    //         labels: responses[1].data.labels.week,
+    //         series: responses[1].data.series.map(item => {
+    //           return {
+    //             name: item.name,
+    //             count: item.count.week,
+    //             isActive: item.isActive,
+    //             Background_Color: item.Background_Color
+    //           }
+    //         })
+    //       }
+    //     });
+    //     updateKpi3(responses[2].data);
+    //     updateKpi6(() => {
+    //       const products = responses[3].data[0];
+    //       const totalSales = responses[3].data[1];
+    //       const productsData = products.map(datum => {
+    //         return {
+    //           "id": datum.id,
+    //           "label": datum.label,
+    //           "value": datum.value.today,
+    //           "color": datum.color
+    //         }
+    //       });
+    //       const totalSalesData = totalSales.map(datum => {
+    //         return {
+    //           "id": datum.id,
+    //           "label": datum.label,
+    //           "value": datum.value.today,
+    //           "color": datum.color
+    //         }
+    //       });
+    //       return {
+    //         products: responses[3].data[0],
+    //         totalSales: responses[3].data[1],
+    //         currentData: {
+    //           products: productsData,
+    //           totalSales: totalSalesData
+    //         }
+    //       }
+
+    //     });
+    //   }))
+    //   .catch(errors => console.log(errors));
 
   }, []);
 
