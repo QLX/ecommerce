@@ -244,7 +244,7 @@ export default function Dashboard() {
         </GridItem>
         <GridItem xs={12} sm={12} md={6} style={{ marginTop: "3vh" }}>
           <Kpi3 rows={kpi3} />
-        </GridItem> */}
+        </GridItem>
       </GridContainer>
     </div>
   );

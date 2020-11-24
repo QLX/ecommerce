@@ -117,6 +117,7 @@ export default function TableFromScratch() {
   //  * @param currentUnitPrice - The current unit price of the product
   //  */
   const onEdit = ({ UPC, columnName }) => {
+    changeValue("");
     setInEditMode({
       status: true,
       rowKey: UPC,
