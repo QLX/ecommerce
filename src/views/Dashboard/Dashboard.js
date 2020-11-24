@@ -74,15 +74,28 @@ export default function Dashboard() {
       products: [],
       totalSales: []
     }
-
     // products: [],
     // totalSales: []
   });
 
+  const [testKpi, updateTestKpi] = useState([]);
+
+  useEffect(() => {
+
+    axios.get('http://gurupia.qlx.com/admin/GET_KPI1_Data.php?id=1', {
+      headers: {
+        'Access-Control-Allow-Origin': "*"
+      }
+    })
+      .then(res => updateTestKpi(res.data))
+      .catch(err => console.log(err))
+
+  }, [])
+
   useEffect(() => {
     // KPI1 Real Route
-    // 
-    const requestOne = axios.get('http://gurupia.qlx.com/admin/GET_KPI1_Data.php?id=1');
+    // http://gurupia.qlx.com/admin/GET_KPI1_Data.php?id=1
+    const requestOne = axios.get('http://localhost:5000/kpi1/');
     const requestTwo = axios.get('http://localhost:5000/kpi2/');
     const requestThree = axios.get('http://localhost:5000/kpi3');
     const requestFour = axios.get('http://localhost:5000/kpi6');
